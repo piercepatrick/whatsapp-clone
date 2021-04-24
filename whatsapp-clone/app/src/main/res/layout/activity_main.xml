@@ -17,6 +17,10 @@
         android:layout_height="wrap_content"
         android:hint="Enter Code"
         android:id="@+id/code" />
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Verification Code"
+        android:id="@+id/send" />
 
 </LinearLayout>

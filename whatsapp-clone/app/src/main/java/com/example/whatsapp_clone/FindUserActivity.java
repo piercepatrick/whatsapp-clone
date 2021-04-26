@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
@@ -22,16 +23,16 @@ public class FindUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_user);
 
-        userList = new ArrayList<>()
+        userList = new ArrayList<>();
         initializeRecyclerView();
     }
 
+    @SuppressLint("WrongConstant")
     private void initializeRecyclerView() {
         mUserList = findViewById(R.id.userList);
         mUserList.setNestedScrollingEnabled(false);
         mUserList.setHasFixedSize(false);
-        mUserListLayoutManager = new LinearLayoutManager(getApplicationContext(),
-                LinearLayout.VERTICAL, false);
+        mUserListLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
         mUserList.setLayoutManager(mUserListLayoutManager);
         mUserListAdapter = new UserListAdapter(userList);
         mUserList.setAdapter(mUserListAdapter);

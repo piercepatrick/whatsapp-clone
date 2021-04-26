@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
+    String mVerificationId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
         mSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mVerificationId != null) {
+                    verifyPhoneNumberWithCode();
+                }
+                else {
+                    startPhoneNumberVerification();
+                }
                 startPhoneNumberVerification();
             }
         });
@@ -56,8 +64,20 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {}
+
+            @Override
+            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(s, forceResendingToken);
+                mVerificationId = s;
+                mSend.setText("Verify Code");
+            }
         };
 
+    }
+
+    private void verifyPhoneNumberWithCode() {
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, mCode.getText().toString());
+        signInWithPhoneAuthCredential(credential);
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential phoneAuthCredential) {
@@ -82,11 +102,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void startPhoneNumberVerification() {
         PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(mAuth)
+                PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
                         .setPhoneNumber(mPhoneNumber.getText().toString())       // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                         .setActivity(this)                 // Activity (for callback binding)
-                        .setCallbacks(mCallBack)          // OnVerificationStateChangedCallbacks
+                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
         // may need to add dependency from stack overflow https://stackoverflow.com/questions/64608484/firebase-phone-verification-verifyphonenumber-deprecated-application-crashed

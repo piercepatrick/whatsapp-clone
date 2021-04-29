@@ -19,10 +19,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText mPhoneNumber, mCode;
     private Button mSend;
@@ -84,8 +86,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    userIsLoggedIn();
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                    if (user != null) {
+                        final DatabaseReference mUserDB = FirebaseDatabase.getInstance().getReference().child("user").child(user.getUid());
+
+        
+                    }
                 }
+
+                //userIsLoggedIn();
+
             }
         });
     }

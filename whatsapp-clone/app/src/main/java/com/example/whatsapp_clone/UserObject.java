@@ -16,5 +16,7 @@ public class UserObject {
         return phone;
     }
 
-
+    public void setName(String name) {
+        this.name = name;
+    }
 }

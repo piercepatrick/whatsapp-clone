@@ -43,6 +43,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                 String key = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
                 FirebaseDatabase.getInstance().getReference().child("user").child(FirebaseAuth.getInstance().getUid()).child("chat").child(key).setValue(true);
                 FirebaseDatabase.getInstance().getReference().child("user").child(userList.get(position).getUid()).child("chat").child(key).setValue(true);
+
+
             }
         });
     }
